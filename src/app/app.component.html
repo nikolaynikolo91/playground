@@ -1,3 +1,27 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu menuId="main-menu" content-id="main">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Games</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon name="game-controller-outline" slot="start"></ion-icon>
+          <ion-label>Game1..coming soon</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="game-controller-outline" slot="start"></ion-icon>
+                  <ion-label>Game2..coming soon</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="about" slot="start"></ion-icon>
+          <ion-label>Game3..coming soon</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
+<app-cv></app-cv>

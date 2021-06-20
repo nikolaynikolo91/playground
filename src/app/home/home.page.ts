@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 export class HomePage {
 
   constructor() {}
-
+  myImage1:string = '../assets/images/me.jpg'
 }
