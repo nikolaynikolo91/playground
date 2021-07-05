@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'snake',
+    loadChildren: () => import('./pages/games/snake/snake.module').then( m => m.SnakePageModule)
+  },
 ];
 
 @NgModule({
