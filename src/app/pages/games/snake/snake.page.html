@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>snake</ion-title>
+    <ion-buttons color="primary" slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  
+  <input >
+  <div id="game-board">
+    <div #square class="square" id="head"></div>
+    <div #tail class="square" id="tail"></div>
+  </div>
+<div>
+  <ion-button (click)="toggleAnimationUp()" expand="full"><ion-icon name="arrow-up-outline"></ion-icon></ion-button>
+  <ion-button (click)="toggleAnimationDown()" expand="full"><ion-icon name="arrow-down-outline"></ion-icon></ion-button>
+  <ion-button (click)="toggleAnimationLeft()" expand="full"
+    ><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+  <ion-button (click)="toggleAnimationRight()" expand="full"
+    ><ion-icon name="arrow-forward-outline"></ion-icon
+  ></ion-button>
+</div>
+ 
+</ion-content>
