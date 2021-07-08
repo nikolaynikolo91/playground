@@ -25,7 +25,7 @@
 //     background-color: black
 // }
 #game-board{
-   display: 100%;
+position: relative;
     background-color: burlywood;
     width: 500px;
     height: 500px;
@@ -42,3 +42,8 @@
     background-color: var(--ion-color-primary);
 }
 
+.direction {
+    width: 50px;
+    height: 50px;
+    
+} 
