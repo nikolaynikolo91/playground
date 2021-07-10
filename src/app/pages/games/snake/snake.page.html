@@ -9,21 +9,47 @@
 
 <ion-content>
   <div #gameBoard id="game-board">
-    <div #square class="square" id="head"></div>
-    <div #tail class="square" id="tail"></div>
+    <div #snake id="snake">
+      <div #tail class="head" id="head"></div>
+      <!-- <div #tail class="tail" id="tail1"></div> -->
+    </div>
   </div>
-  <div>
-    <ion-button class="direction"  (click)="toggleAnimationUp()" expand="full"
-      ><ion-icon  name="arrow-up-outline"></ion-icon
-    ></ion-button>
-    <ion-button class="direction"  (click)="toggleAnimationDown()" expand="full"
-      ><ion-icon name="arrow-down-outline"></ion-icon
-    ></ion-button>
-    <ion-button class="direction"  (click)="toggleAnimationLeft()" expand="full"
-      ><ion-icon name="arrow-back-outline"></ion-icon
-    ></ion-button>
-    <ion-button class="direction"  (click)="toggleAnimationRight()" expand="full"
-      ><ion-icon name="arrow-forward-outline"></ion-icon
-    ></ion-button>
-  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          class="direction"
+          (click)="toggleAnimationUp()"
+          expand="full"
+          ><ion-icon name="arrow-up-outline"></ion-icon
+        ></ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button
+          class="direction"
+          (click)="toggleAnimationLeft()"
+          expand="full"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          class="direction"
+          (click)="toggleAnimationDown()"
+          expand="full"
+          ><ion-icon name="arrow-down-outline"></ion-icon
+        ></ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button
+          class="direction"
+          (click)="toggleAnimationRight()"
+          expand="full"
+          ><ion-icon name="arrow-forward-outline"></ion-icon
+        ></ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
