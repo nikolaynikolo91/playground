@@ -96,11 +96,11 @@ export class SnakePage implements AfterViewInit {
           }
 
           if (this.x < 0) {
-            this.x = 499;
+            this.x = 500;
           }
 
           if (this.y < 0) {
-            this.y = 499;
+            this.y = 500;
           }
 
           this.renderer.setStyle(
@@ -129,7 +129,7 @@ export class SnakePage implements AfterViewInit {
             this.renderer.setStyle(
               foodBoard,
               'transform',
-              `translate(${this.foodX}px,${this.foodY + 1}px)`
+              `translate(${this.foodX}px,${this.foodY}px)`
             );
           }
 
@@ -144,11 +144,35 @@ export class SnakePage implements AfterViewInit {
             );
             this.tail.unshift(this.tail.pop());
           }
+
+          let counter = 0;
+          for (const element of this.snake.nativeElement.children) {
+            const text = element.attributes[2].value;
+
+            const regex =
+              /[a-z]+\:\s[a-z]+\((\d+)[a-z]{2}\,\s(\d+)[a-z]{2}\)\;/g;
+            const arr = regex.exec(text);
+            const x = +arr[1];
+            const y = +arr[2];
+
+            if (x === this.x && y === this.y) {
+              counter++;
+              console.log(counter);
+              if (counter > 1) {
+                this.reload();
+              }
+            }
+          }
         })
       )
       .subscribe();
   }
 
+  reload() {
+    this.direction.unsubscribe();
+    alert('game over');
+    location.reload();
+  }
   getRandom10() {
     return this.getRandomInt(1, 50) * 10;
   }
