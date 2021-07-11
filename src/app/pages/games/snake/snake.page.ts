@@ -115,11 +115,11 @@ export class SnakePage implements AfterViewInit {
           if (this.foodX === this.x && this.foodY === this.y) {
             const newTail = this.renderer.createElement('div');
             this.renderer.addClass(newTail, 'tail');
-            this.renderer.setStyle(
-              newTail,
-              'transform',
-              `translate(${this.tailX}px,${this.tailY}px)`
-            );
+            // this.renderer.setStyle(
+            //   newTail,
+            //   'transform',
+            //   `translate(${this.tailX}px,${this.tailY}px)`
+            // );
             this.renderer.appendChild(this.snake.nativeElement, newTail);
             this.tail.push(newTail);
 
@@ -129,12 +129,12 @@ export class SnakePage implements AfterViewInit {
             this.renderer.setStyle(
               foodBoard,
               'transform',
-              `translate(${this.foodX}px,${this.foodY}px)`
+              `translate(${this.foodX}px,${this.foodY + 1}px)`
             );
           }
 
           if (this.tail.length > 0) {
-            this.tail.unshift(this.tail.pop());
+            // this.tail.reverse();
 
             this.renderer.setStyle(
               this.tail[this.tail.length - 1],
@@ -142,6 +142,7 @@ export class SnakePage implements AfterViewInit {
               'transform',
               `translate(${this.tailX}px,${this.tailY}px)`
             );
+            this.tail.unshift(this.tail.pop());
           }
         })
       )
