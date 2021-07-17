@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   QueryList,
   Renderer2,
@@ -9,9 +10,9 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { AnimationController, Animation } from '@ionic/angular';
-
-import { BehaviorSubject, timer } from 'rxjs';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import { Direction } from './direction';
+import { BehaviorSubject, Subject, timer } from 'rxjs';
+import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-snake',
@@ -22,26 +23,41 @@ export class SnakePage implements AfterViewInit {
   @ViewChild('gameBoard') gameBoard: ElementRef;
   @ViewChild('snake') snake: ElementRef;
   @ViewChild('head') head: ElementRef;
-  // @ViewChildren('tail') tail: QueryList<any>;
 
   private x = 0;
   private y = 0;
   private direction = new BehaviorSubject('RIGHT');
-  private movingDirection = '';
+  private movingDirection: Direction;
   private foodX: number;
   private foodY: number;
   private tailX: number;
   private tailY: number;
-  private tail: ElementRef[] = [];
+  private tail: any[] = [];
+  private destroy = new Subject();
+  private keyCodes = {
+    37: Direction.left,
+    38: Direction.up,
+    39: Direction.right,
+    40: Direction.down,
+  };
+
+  // private directionToMove = {
+  //   "UP": (): any => this.toggleAnimationUp(),
+  //   "DOWN": (): any => this.toggleAnimationDown(),
+  //   "LEFT": (): any => this.toggleAnimationLeft(),
+  //   "RIGHT": (): any => this.toggleAnimationRight(),
+  // };
 
   constructor(private renderer: Renderer2) {}
+  @HostListener('document:keydown', ['$event'])
+  onKeypress(e: KeyboardEvent) {
+    const code = e.keyCode;
+    this.direction.next(this.keyCodes[code]);
+  }
 
   ngAfterViewInit() {
     this.food();
     this.move();
-    //  console.log(this.getRandomInt(0, 500));
-    // const fullSnake = this.snake.nativeElement.children;
-    console.log(this.snake.nativeElement.children);
   }
 
   food() {
@@ -62,6 +78,7 @@ export class SnakePage implements AfterViewInit {
 
     timer(0, 200)
       .pipe(
+        takeUntil(this.destroy),
         withLatestFrom(this.direction),
         tap(([, direction]) => {
           this.tailX = this.x;
@@ -70,7 +87,6 @@ export class SnakePage implements AfterViewInit {
           switch (direction) {
             case 'UP':
               this.y -= 10;
-
               break;
             case 'DOWN':
               this.y += 10;
@@ -81,7 +97,6 @@ export class SnakePage implements AfterViewInit {
             case 'RIGHT':
               this.x += 10;
               break;
-
             default:
               break;
           }
@@ -115,17 +130,13 @@ export class SnakePage implements AfterViewInit {
           if (this.foodX === this.x && this.foodY === this.y) {
             const newTail = this.renderer.createElement('div');
             this.renderer.addClass(newTail, 'tail');
-            // this.renderer.setStyle(
-            //   newTail,
-            //   'transform',
-            //   `translate(${this.tailX}px,${this.tailY}px)`
-            // );
             this.renderer.appendChild(this.snake.nativeElement, newTail);
             this.tail.push(newTail);
 
+            console.log(this.tail[0].getBoundingClientRect());
+
             this.foodX = this.getRandom10();
             this.foodY = this.getRandom10();
-
             this.renderer.setStyle(
               foodBoard,
               'transform',
@@ -134,11 +145,8 @@ export class SnakePage implements AfterViewInit {
           }
 
           if (this.tail.length > 0) {
-            // this.tail.reverse();
-
             this.renderer.setStyle(
               this.tail[this.tail.length - 1],
-
               'transform',
               `translate(${this.tailX}px,${this.tailY}px)`
             );
@@ -148,7 +156,6 @@ export class SnakePage implements AfterViewInit {
           let counter = 0;
           for (const element of this.snake.nativeElement.children) {
             const text = element.attributes[2].value;
-
             const regex =
               /[a-z]+\:\s[a-z]+\((\d+)[a-z]{2}\,\s(\d+)[a-z]{2}\)\;/g;
             const arr = regex.exec(text);
@@ -169,8 +176,8 @@ export class SnakePage implements AfterViewInit {
   }
 
   reload() {
-    this.direction.unsubscribe();
     alert('game over');
+    this.destroy.next();
     location.reload();
   }
   getRandom10() {
